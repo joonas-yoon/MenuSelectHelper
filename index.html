@@ -61,6 +61,11 @@
 
 		function init(){
 			$(".step.page").transition('hide');
+			$('.ui.label').removeClass('huge selected yellow');
+		}
+
+		function reset(){
+			init();
 			$("#buttonStart").removeClass('disabled loading');
 		}
 
@@ -148,63 +153,45 @@
 			}
 		};
 
-		var pageConfig1 = function(menuset){
+		var randomSpeedMin = 100, randomSpeedMax = 500;
+
+		function runRoulettePage(menuId, menuset){
+			if( ! Object.keys(menuset || {}).length ){
+				$("#buttonStart").removeClass('disabled loading');
+				$(this).removeClass('running');
+				return {};
+			}
+
+			var menuStr = 'menu' + menuId;
 			return {
-				animation: 'slide down',
+				animation : 'slide down',
 				onShow: function(){
 					var div = $(this);
 					if( div.hasClass('running') ) return;
 					div.html('');
-					Object.keys(menuset).forEach(function(m, idx){
-						div.append('<div class="ui label menu1" id="menu1-'+ idx +'">'+ m +'</div>');
-					});
-				},
-				onComplete: function(){
-					var div = $(this);
-					if( div.hasClass('running') ) return;
-
 					div.addClass('running');
-					var endtime = Math.random() * 750 + 200;
-					var incTime = Math.min(20, Math.max(50, Math.random()));
-					doRoulette({
-						onRun: function(prev, curr){
-							$("#menu1-"+prev).removeClass('huge yellow selected');
-							$("#menu1-"+curr).addClass('huge yellow selected');
-						},
-						onDone: function(){
-							div.removeClass('running');
-							$("#page2").transition(pageConfig2(menuset[$('.menu1.selected').html()]));
-						}
-					},
-						0, 8, incTime, endtime
-					);
-				}
-			};
-		};
-
-		var pageConfig2 = function(menuset){
-			return {
-				animation : 'slide down',
-				onStart: function(){
-					var div = $(this);
-					div.html('');
 					Object.keys(menuset).forEach(function(m, idx){
-						div.append('<div class="ui label menu2" id="menu2-'+ idx +'">'+ m +'</div>');
+						div.append('<div class="ui label ' + menuStr + '" id="'+ menuStr +'-'+ idx +'">'+ m +'</div>');
 					});
 				},
 				onComplete: function(){
-					var endtime = Math.random() * 750 + 200;
+					var div = $(this);
+					if( !div.hasClass('running') ) return;
+
+					var endtime = Math.random() * (randomSpeedMax - randomSpeedMin) + randomSpeedMin;
 					var incTime = Math.min(20, Math.max(50, Math.random()));
 					console.log(endtime);
 					doRoulette({
 						onRun: function(prev, curr){
-							$("#menu2-"+prev).removeClass('huge yellow selected');
-							$("#menu2-"+curr).addClass('huge yellow selected');
+							$('#' + menuStr + '-' + prev).removeClass('huge yellow selected');
+							$('#' + menuStr + '-' + curr).addClass('huge yellow selected');
 						},
 						onDone: function(){
-
-							$("#buttonStart").removeClass('disabled loading');
-							// $("#page3").transition(pageConfig2);
+							console.log("#page" + menuId);
+							var nextId = menuId + 1;
+							$("#page" + nextId).transition(
+								runRoulettePage(nextId, menuset[$('.' + menuStr + '.selected').html()])
+							);
 						}
 					},
 						0, Object.keys(menuset).length, incTime, endtime
@@ -213,9 +200,16 @@
 			};
 		};
 
-		$("#buttonStart").click(function(){
+		$("#buttonStart").click(function(evt){
+			evt.preventDefault();
+
 			$("#buttonStart").addClass('disabled loading');
-			$("#page1").transition(pageConfig1(menus));
+
+			init();
+
+			$("#page1").transition(runRoulettePage(1, menus));
+
+			return false;
 		});
 	});
 </script>
