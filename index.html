@@ -15,6 +15,26 @@
 			display: none;
 			padding-top: 1em;
 		}
+		#header .ui.text.container {
+			padding-top: 2rem;
+			padding-bottom: 2rem;
+		}
+		#footer {
+	    display: block;
+	    position: absolute;
+	    width: 100%;
+	    bottom: 0;
+		}
+		#footer .ui.text.container {
+			text-align: center;
+			font-size: 1rem;
+		}
+		@media all and (max-width: 768px) {
+      #header .ui.text.container { 
+				padding-top: 0rem;
+				padding-bottom: 0rem;
+			}
+		}
 	</style>
 
 	<script
@@ -24,44 +44,57 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
 </head>
 <body>
-	<div class="ui inverted vertical masthead center aligned segment">
+	<div class="ui inverted vertical masthead center aligned segment" id="header">
 		<div class="ui text container">
-			<h1 class="ui inverted header" style="margin-top: 2em; margin-bottom: 0.5em;">
-				메뉴 결정 도우미
+			<h1 class="ui inverted header" style="margin: 0;">
+				메뉴 결정 도우미 &nbsp;<a href="#" class="ui basic label">v0.2</a>
 			</h1>
-			<a href="#" class="ui basic label">v0.1</a>
-			<div style="display:block; height: 2em; line-height: 2em;">&nbsp;</div>
 		</div>
 	</div>
-	<div class="ui vertical segment">
+	<div class="ui vertical segment" style="padding-bottom: 10rem;">
 		<div class="ui container" style="text-align: center; margin: 2em auto;">
 			<button class="ui huge primary button" id="buttonStart">도와줘요!</button>
 			<div id="page1" class="step page"></div>
 			<div id="page2" class="step page"></div>
 		</div>
 	</div>
+
+	<div class="ui black inverted vertical footer segment" id="footer">
+		<div class="ui text container">
+			<p
+				id="supportedBrowsers"
+				data-tooltip="Edge 15+, Firefox 56+, Chrome 61+, Safari 10.1+">
+				이 사이트를 정상적으로 사용하시려면 비동기 속성을 지원하는 브라우저가 필요합니다.<br>
+				<a href="https://caniuse.com/#search=async" target="_blank">이 곳</a>에서 지원 가능한 브라우저를 확인하세요.
+			</p>
+			<p>2017년 12월까지 73.32%의 브라우저가 <a href="https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Statements/async_function" target="_blank">이 기능</a>을 지원하고 있습니다.</p>
+		</div>
+	</div>
 </body>
 
-<script>
-	function sleep(ms) {
-	  return new Promise(resolve => setTimeout(resolve, ms));
-	}
+<script async="true" type="text/javascript">
+	$(document).ready(function(){
+		$("#supportedBrowsers").popup();
 
-	async function doRoulette(funcs, curr, len, speed, endtime){
-		if(speed >= endtime){
-			funcs.onDone();
-			return;
+		function sleep(ms) {
+		  return new Promise(function(resolve){return setTimeout(resolve, ms)});
 		}
-  	await sleep(speed);
-  	funcs.onRun((curr + len -1) % len, curr % len);
-  	doRoulette(funcs, curr+1, len, speed + (speed / 20.), endtime);
-	}
 
-	$(function(){
+		async function doRoulette(funcs, curr, len, speed, endtime){
+			if(speed >= endtime){
+				funcs.onDone();
+				return;
+			}
+	  	await sleep(speed);
+	  	funcs.onRun((curr + len -1) % len, curr % len);
+	  	doRoulette(funcs, curr+1, len, speed + (speed / 20.), endtime);
+		}
 
 		function init(){
-			$(".step.page").transition('hide');
-			$('.ui.label').removeClass('huge selected yellow');
+			var pages = $(".step.page");
+			pages.removeClass('transition visible');
+			pages.attr('style', '');
+			$('.ui.label').removeClass('basic huge selected yellow blue');
 		}
 
 		function reset(){
@@ -69,128 +102,48 @@
 			$("#buttonStart").removeClass('disabled loading');
 		}
 
-		var menus = {
-			'중식':{
-				'탕수육': {},
-				'깐풍기': {},
-				'칠리새우': {},
-				'짬뽕': {},
-				'사천탕수육': {},
-				'짜짱면': {},
-				'유린기': {},
-				'울면': {}
-			},
-			'일식': {
-				'초밥': {},
-				'돈부리': {},
-				'회': {},
-				'소바': {},
-				'오코노미야끼': {},
-				'라멘': {},
-				'정어덮밥': {},
-				'우동': {}
-			},
-			'한식': {
-				'냉면': {},
-				'설렁탕': {},
-				'닭도리탕': {},
-				'간장게장': {},
-				'김치찌개': {},
-				'낙지': {},
-				'불고기': {},
-				'곱창': {}
-			},
-			'고기': {
-				'삼겹살': {},
-				'갈비': {},
-				'갈매기살': {},
-				'항정살': {},
-				'목살': {},
-				'가브리살': {},
-				'등심': {},
-				'안심': {}
-			},
-			'라면': {
-				'비빔면': {},
-				'신라면': {},
-				'짜왕': {},
-				'너구리': {},
-				'불닭볶음면': {},
-				'삼양라면': {},
-				'진라면': {},
-				'안성탕면': {}
-			},
-			'치킨': {
-				'BBQ': {},
-				'BHC': {},
-				'네네치킨': {},
-				'굽네치킨': {},
-				'교촌치킨': {},
-				'KFC': {},
-				'파파이스': {},
-				'맘스터치': {}
-			},
-			'분식/야식/디저트': {
-				'떡볶이': {},
-				'순대': {},
-				'빙수': {},
-				'오뎅': {},
-				'보쌈': {},
-				'족발': {},
-				'케이크': {},
-				'빵': {},
-				'푸딩': {}
-			},
-			'기타': {
-				'스테이크': {},
-				'파스타': {},
-				'훈제오리': {},
-				'햄버거': {},
-				'쌀국수': {},
-				'피자': {},
-				'만두': {},
-				'커리': {}
-			}
-		};
 
 		var randomSpeedMin = 100, randomSpeedMax = 500;
 
-		function runRoulettePage(menuId, menuset){
-			if( ! Object.keys(menuset || {}).length ){
+		var runRoulettePage = function (menuId, menuset){
+			var menuset = menuset || {};
+			var div = $("#page" + menuId);
+			if( ! Object.keys(menuset).length ){
 				$("#buttonStart").removeClass('disabled loading');
-				$(this).removeClass('running');
-				return {};
+				div.removeClass('running');
+				return false;
 			}
-
+					
 			var menuStr = 'menu' + menuId;
+			div.html('');
+			Object.keys(menuset).forEach(function(m, idx){
+				var item = '<div class="ui label ' + menuStr + '" id="'+ menuStr +'-'+ idx +'">'+ m +'</div>';
+				div.append(item);
+			});
+
 			return {
 				animation : 'slide down',
-				onShow: function(){
-					var div = $(this);
+				onStart: function(){
 					if( div.hasClass('running') ) return;
-					div.html('');
 					div.addClass('running');
-					Object.keys(menuset).forEach(function(m, idx){
-						div.append('<div class="ui label ' + menuStr + '" id="'+ menuStr +'-'+ idx +'">'+ m +'</div>');
-					});
 				},
 				onComplete: function(){
-					var div = $(this);
 					if( !div.hasClass('running') ) return;
 
 					var endtime = Math.random() * (randomSpeedMax - randomSpeedMin) + randomSpeedMin;
 					var incTime = Math.min(20, Math.max(50, Math.random()));
-					console.log(endtime);
 					doRoulette({
 						onRun: function(prev, curr){
 							$('#' + menuStr + '-' + prev).removeClass('huge yellow selected');
 							$('#' + menuStr + '-' + curr).addClass('huge yellow selected');
 						},
 						onDone: function(){
-							console.log("#page" + menuId);
+							var selected = $('.' + menuStr +'.selected');
+							selected.addClass('basic blue');
+							selected.removeClass('yellow');
 							var nextId = menuId + 1;
 							$("#page" + nextId).transition(
-								runRoulettePage(nextId, menuset[$('.' + menuStr + '.selected').html()])
+								runRoulettePage(nextId, menuset[selected.html()])
 							);
 						}
 					},
@@ -200,16 +153,21 @@
 			};
 		};
 
-		$("#buttonStart").click(function(evt){
-			evt.preventDefault();
+		function startRoullette(menus){
+			$("#page1").transition(runRoulettePage(1, menus));
+		}
 
-			$("#buttonStart").addClass('disabled loading');
+		$("#buttonStart").on('click', function(evt){
+  		var e = evt || window.event;
+	    //IE9 & Other Browsers
+	    if (e.stopPropagation) { e.stopPropagation(); }
+	    //IE8 and Lower
+	    else { e.cancelBubble = true; }
+			e.preventDefault();
 
 			init();
-
-			$("#page1").transition(runRoulettePage(1, menus));
-
-			return false;
+			$("#buttonStart").addClass('disabled loading');
+			$.getJSON("./menus.json", startRoullette);
 		});
 	});
 </script>
