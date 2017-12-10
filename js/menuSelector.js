@@ -41,7 +41,7 @@ $(document).ready(function(){
   var runRoulettePage = function (menuId, menuset){
     var menuset = menuset || {};
     var div = $("#page" + menuId);
-    if( !div || !Object.keys(menuset).length ){
+    if( !div || Object.keys(menuset).length < 1 ){
       $("#buttonStart").removeClass('disabled loading');
       div.removeClass('running');
       return false;
@@ -52,9 +52,7 @@ $(document).ready(function(){
     Object.keys(menuset).forEach(function(m, idx){
       var item = '<div class="ui label menu-item ' + menuStr + '" id="'+ menuStr +'-'+ idx +'">'+ m +'</div>';
       div.append(item);
-    });
-
-    console.log(menuset);
+    })
 
     return {
       animation : 'slide down',
@@ -103,6 +101,6 @@ $(document).ready(function(){
 
     init();
     $("#buttonStart").addClass('disabled loading');
-    $.getJSON("./menus.json", startRoullette);
+    $.getJSON('https://raw.githubusercontent.com/joonas-yoon/MenuSelectHelper/master/js/menus.json', startRoullette);
   });
 });
