@@ -19,14 +19,12 @@ $(document).ready(function(){
     var pages = $(".step.page");
     pages.removeClass('transition visible');
     pages.attr('style', '');
-    $('.ui.label.menu-item').removeClass('basic huge selected yellow blue');
   }
 
   function reset(){
     init();
     $("#buttonStart").removeClass('disabled loading');
   }
-
 
   var randomSpeedMin = 100, randomSpeedMax = 500;
 
@@ -68,13 +66,12 @@ $(document).ready(function(){
         var incTime = Math.min(20, Math.max(50, Math.random()));
         doRoulette({
           onRun: function(prev, curr){
-            $('#' + menuStr + '-' + prev).removeClass('huge yellow selected');
-            $('#' + menuStr + '-' + curr).addClass('huge yellow selected');
+            $('#' + menuStr + '-' + prev).removeClass('huge selected blue');
+            $('#' + menuStr + '-' + curr).addClass('huge selected blue');
           },
           onDone: function(){
             var selected = $('.' + menuStr +'.selected');
-            selected.addClass('basic blue');
-            selected.removeClass('yellow');
+            selected.addClass('basic');
             var nextId = menuId + 1;
             $("#page" + nextId).transition(
               runRoulettePage(nextId, menuset[selected.html()])
