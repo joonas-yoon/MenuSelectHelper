@@ -39,20 +39,26 @@ $(document).ready(function(){
   });
 
   var runRoulettePage = function (menuId, menuset){
-    var menuset = menuset || {};
+    var menuset = menuset || [];
     var div = $("#page" + menuId);
-    if( !div || Object.keys(menuset).length < 1 ){
+    if( !div || !menuset || Object.keys(menuset).length < 1 ){
       $("#buttonStart").removeClass('disabled loading');
-      div.removeClass('running');
+      if(!!div) div.removeClass('running');
       return false;
     }
-        
+
     var menuStr = 'menu' + menuId;
     div.html('');
-    Object.keys(menuset).forEach(function(m, idx){
+    var attachFunc = function(m, idx){
       var item = '<div class="ui label menu-item ' + menuStr + '" id="'+ menuStr +'-'+ idx +'">'+ m +'</div>';
       div.append(item);
-    })
+    }
+
+    if(Array.isArray(menuset)){
+      menuset.forEach(attachFunc);
+    } else {
+      Object.keys(menuset).forEach(attachFunc);
+    }
 
     return {
       animation : 'slide down',
