@@ -22,3 +22,6 @@
 - 한식
 - - https://namu.wiki/w/%ED%95%9C%EA%B5%AD%20%EC%9A%94%EB%A6%AC/%EB%AA%A9%EB%A1%9D
 
+- 세계 음식
+- - http://blog.naver.com/PostView.nhn?blogId=ga_mkt&logNo=220230746513
+
