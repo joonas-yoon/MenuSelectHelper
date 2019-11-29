@@ -9,3 +9,13 @@
 ![메뉴 결정표](images/motive.jpg)
 
 언제나 열려있습니다! 발로 짜서 죄송합니다. 여러분의 영광스러운 손길을 언제나 기다립니다!
+
+# 메뉴 추가에 참고한 문서
+
+- 중식
+- - https://namu.wiki/w/%ED%95%9C%EA%B5%AD%EC%8B%9D%20%EC%A4%91%ED%99%94%20%EC%9A%94%EB%A6%AC
+
+- 일식
+- - https://namu.wiki/w/%EC%9D%BC%EB%B3%B8%20%EC%9A%94%EB%A6%AC#s-5
+- - 너무 많아서 일부만 추가
+
