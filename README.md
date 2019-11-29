@@ -19,3 +19,6 @@
 - - https://namu.wiki/w/%EC%9D%BC%EB%B3%B8%20%EC%9A%94%EB%A6%AC#s-5
 - - 너무 많아서 일부만 추가
 
+- 한식
+- - https://namu.wiki/w/%ED%95%9C%EA%B5%AD%20%EC%9A%94%EB%A6%AC/%EB%AA%A9%EB%A1%9D
+
